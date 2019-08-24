@@ -12,9 +12,9 @@ namespace work_minimum.Controllers
     public class HomeController : Controller
     {
         [HttpPost]
-        public int Index()
+        public JsonResult Index(string name)
         {
-            return 111;
+            return Json(name+"asdasdas");
         }
     }
 }
