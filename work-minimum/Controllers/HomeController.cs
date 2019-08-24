@@ -13,7 +13,7 @@ namespace work_minimum.Controllers
     public class HomeController : Controller
     {
         [HttpPost]
-        public JsonResult Index([FromBody]Note note)
+        public JsonResult Index(Note note)
         {
             return Json(note.body+"asdasdas");
         }
