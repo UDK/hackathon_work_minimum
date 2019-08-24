@@ -15,14 +15,5 @@ namespace workminimum.Models
   
         public string[] attachments { get; set; }
 
-        public Note(string title, string body, Int64 id,string[]tags,string lastTimeModified, string[] attachments)
-        {
-            this.title = title;
-            this.body = body;
-            this.id = id;
-            this.tags = tags;
-            this.lastTimeModified = lastTimeModified;
-            this.attachments = attachments;
-        }
     }
 }

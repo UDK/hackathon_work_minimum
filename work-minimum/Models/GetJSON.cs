@@ -9,10 +9,6 @@ namespace workminimum.Models
     {
         public string func { get; set; }
         
-        public Note getNote()
-        {
-            return null;
-            //return new Note(title, body, id, tags, lastTimeModified, attachments);
-        }
+        
     }
 }
