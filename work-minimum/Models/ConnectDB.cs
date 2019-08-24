@@ -35,7 +35,7 @@ namespace workminimum.Models
             }
             catch(Exception o)
             {
-                return o.Message;
+                return o.ToString();
             }
             finally
             {
