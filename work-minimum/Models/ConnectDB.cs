@@ -24,18 +24,18 @@ namespace workminimum.Models
             return new NpgsqlConnection(builder.ToString());
         }
 
-        public int insertNote(Note note)
+        public string insertNote(Note note)
         {
             var connect = getConnect();
             try
             {
                 connect.Open();
                 NpgsqlCommand commands = new NpgsqlCommand("INSERT into Note(body,lastTimeModified,title,attachments,tags) values('" + note.body + "'," + DateTime.Now + ",'" + note.title + "'," + string.Join(',', note.attachments) + "'," + string.Join(',', note.tags) + ")", connect);
-                return commands.ExecuteNonQuery();
+                return commands.ExecuteNonQuery().ToString();
             }
-            catch
+            catch(Exception o)
             {
-                return -1;
+                return o.Message;
             }
             finally
             {
