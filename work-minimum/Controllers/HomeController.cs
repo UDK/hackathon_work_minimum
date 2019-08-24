@@ -13,9 +13,11 @@ namespace work_minimum.Controllers
     public class HomeController : Controller
     {
         [HttpPost]
-        public JsonResult Index(Note note)
+        public JsonResult Index([FromBody]GetJSON note)
         {
-            return Json(note.body+"asdasdas");
+            ConnectDB wrapperDB = new ConnectDB();
+            var db = wrapperDB.insertNote(note);
+            return Json(db);
         }
     }
 }
