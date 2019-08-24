@@ -7,21 +7,8 @@ namespace workminimum.Models
 {
     public class Note
     {
-        string title { get; set; }
-        string body { get; set; }
-        Int64 id { get; set; }
-        string[] tags { get; set; }
-        DateTime lastTimeModified
-        {
-            get
-            {
-                return lastTimeModified;
-            }
-            set
-            {
-                lastTimeModified = DateTime.Now;
-            }
-        }
-        string[] attachments { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
+        
     }
 }

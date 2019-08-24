@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using work_minimum.Models;
+using workminimum.Models;
 
 namespace work_minimum.Controllers
 {
@@ -12,9 +13,9 @@ namespace work_minimum.Controllers
     public class HomeController : Controller
     {
         [HttpPost]
-        public JsonResult Index(string name)
+        public JsonResult Index([FromBody]Note note)
         {
-            return Json(name+"asdasdas");
+            return Json(note.body+"asdasdas");
         }
     }
 }
