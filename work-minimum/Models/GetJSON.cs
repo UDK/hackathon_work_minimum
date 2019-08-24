@@ -8,7 +8,6 @@ namespace workminimum.Models
     public class GetJSON : Note
     {
         public string func { get; set; }
-        
-        
+
     }
 }
