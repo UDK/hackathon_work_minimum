@@ -30,8 +30,8 @@ namespace workminimum.Models
             try
             {
                 connect.Open();
-                NpgsqlCommand commands = new NpgsqlCommand("INSERT into Note(body,lastTimeModified,title,attachments,tags) values('" + note.body + "'," + DateTime.Now + ",'" + note.title + "'," + string.Join(',', note.attachments) + "'," + string.Join(',', note.tags) + ")", connect);
-                return "INSERT into Note(body,lastTimeModified,title,attachments,tags) values('" + note.body + "'," + DateTime.Now + ",'" + note.title + "'," + string.Join(',', note.attachments) + "'," + string.Join(',', note.tags) + ")";
+                NpgsqlCommand commands = new NpgsqlCommand("INSERT into \"Note\"(body,lastTimeModified,title,attachments,tags) values('" + note.body + "','" + DateTime.Now + "','" + note.title + "','" + string.Join(',', note.attachments) + "','" + string.Join(',', note.tags) + "')", connect);
+                return "INSERT into \"Note\"(body,lastTimeModified,title,attachments,tags) values('" + note.body + "','" + DateTime.Now + "','" + note.title + "','" + string.Join(',', note.attachments) + "','" + string.Join(',', note.tags) + "')";
             }
             catch(Exception o)
             {
