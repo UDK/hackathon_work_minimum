@@ -8,10 +8,10 @@ namespace workminimum.Models
 {
     public class Note : INote
     {
-        public string title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string body { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public long id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string[] tags { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string[] attachments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string title { get ; set ; }
+        public string body { get ; set ; }
+        public string[] tags { get ; set ; }
+        public string[] attachments { get ; set ; }
+       
     }
 }

@@ -9,7 +9,6 @@ namespace hack_api.Model
     {
         string title { get; set; }
         string body { get; set; }
-        Int64 id { get; set; }
         string[] tags { get; set; }
         string[] attachments { get; set; }
     }
