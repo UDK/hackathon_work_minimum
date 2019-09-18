@@ -32,6 +32,9 @@ namespace hack_api.Controllers
                     return GetNotes(collection).GetAwaiter().GetResult();
                 case "DEL":
                     return Delete(collection,jSON.id).GetAwaiter().GetResult().ToJson();
+                case "UPD":
+                    return Update(collection, jSON).GetAwaiter().GetResult();
+
             }
             return "0";
         }
@@ -45,10 +48,15 @@ namespace hack_api.Controllers
             var Items = await collection.Find(new BsonDocument()).ToListAsync();
             return Items.ToJson();
         }
-        private static async Task<string> Delete(IMongoCollection<BsonDocument> collection,string idRemove)
+        private static async Task<string> Delete(IMongoCollection<BsonDocument> collection, string idRemove)
         {
-            var ss = new BsonDocument("_id", new ObjectId("5d7e747b02a3cd1318e17af7"));
+            var ss = new BsonDocument("_id", new ObjectId(idRemove));
             var result = await collection.DeleteOneAsync(ss);
+            return result.ToJson();
+        }
+        private static async Task<string> Update(IMongoCollection<BsonDocument> collection, GetJSON note )
+        {
+            var result = await collection.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(note.id)),note.GetNote().ToBsonDocument());
             return result.ToJson();
         }
     }
