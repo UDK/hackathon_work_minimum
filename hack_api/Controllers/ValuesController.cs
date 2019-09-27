@@ -24,6 +24,7 @@ namespace hack_api.Controllers
 
         // POST api/values
         [HttpPost]
+        [DisableCors]
         public string Post([FromBody] DataMobailLevel jSON)
         {
             //Вынести на уровень выше
