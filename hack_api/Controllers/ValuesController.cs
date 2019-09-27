@@ -75,9 +75,9 @@ namespace hack_api.Controllers
             return "0";
         }
 
-        private static async Task Add(IMongoCollection<BsonDocument> collection, GetJSON note)
+        private static void Add(IMongoCollection<BsonDocument> collection, GetJSON note)
         {
-            await collection.InsertOneAsync(note.ToBsonDocument());
+             collection.InsertOneAsync(note.ToBsonDocument());
         }
         private static async Task<string> GetNotes(IMongoCollection<BsonDocument> collection)
         {
