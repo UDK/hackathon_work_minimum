@@ -7,7 +7,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace workminimum.Models
 {
-    public abstract class GetJSON
+    public class GetJSON
     {
         [BsonIgnoreIfNull]
         public string func { get; set; }

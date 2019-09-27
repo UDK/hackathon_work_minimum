@@ -52,11 +52,11 @@ namespace hack_api.Controllers
 
 
         [HttpPost]
-        [Route("people")]
-        public string PostPeople([FromBody] People jSON)
+        [Route("all")]
+        public string PostPeople([FromBody] GetJSON jSON)
         {
             //Вынести на уровень выше
-            const string nameCollection = "People";
+            const string nameCollection = "Note";
             MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
             var database = client.GetDatabase("coordinateHackathon");
             IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
