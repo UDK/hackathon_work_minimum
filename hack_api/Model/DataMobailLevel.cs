@@ -13,6 +13,8 @@ namespace hack_api.Model
 
         public double X { get; set; }
 
+        public int typeG { get; set; }
+
         public double Y { get; set; }
 
         public string nameOperator { get; set; }
