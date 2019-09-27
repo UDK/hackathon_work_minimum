@@ -7,6 +7,7 @@ using workminimum.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using hack_api.Model;
 
 namespace hack_api.Controllers
 {
@@ -21,12 +22,12 @@ namespace hack_api.Controllers
             //Вынести на уровень выше
             const string nameCollection = "Note";
             MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
-            var database = client.GetDatabase("hackathon");
+            var database = client.GetDatabase("coordinateHackathon");
             IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
             switch (jSON.func)
             {
                 case "ADD":
-                    Add(collection, jSON.GetNote()).GetAwaiter();
+                    Add(collection, jSON.GetParent()).GetAwaiter();
                     return "1";
                 case "ALL":
                     return GetNotes(collection).GetAwaiter().GetResult();
@@ -39,7 +40,7 @@ namespace hack_api.Controllers
             return "0";
         }
 
-        private static async Task Add(IMongoCollection<BsonDocument> collection, Note note)
+        private static async Task Add(IMongoCollection<BsonDocument> collection, DataMobailLevel note)
         {
             await collection.InsertOneAsync(note.ToBsonDocument());
         }
@@ -56,7 +57,7 @@ namespace hack_api.Controllers
         }
         private static async Task<string> Update(IMongoCollection<BsonDocument> collection, GetJSON note )
         {
-            var result = await collection.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(note.id)),note.GetNote().ToBsonDocument());
+            var result = await collection.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(note.id)),note.GetParent().ToBsonDocument());
             return result.ToJson();
         }
     }
