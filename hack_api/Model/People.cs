@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using hack_api.Model;
+using workminimum.Models;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace workminimum.Models
+namespace hack_api.Model
 {
-    public abstract class GetJSON
+    public class People
     {
+
         [BsonIgnoreIfNull]
         public string func { get; set; }
         [BsonIgnoreIfNull]
-        public string Id { get; set; }
+        public string id { get; set; }
+        public int name { get; set; }
+        public int surName { get; set; }
+        public int lastName { get; set; }
 
     }
 }

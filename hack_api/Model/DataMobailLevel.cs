@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using workminimum.Models;
 
 namespace hack_api.Model
 {
-    public class DataMobailLevel
+    public class DataMobailLevel : GetJSON
     {
         public double X { get; set; }
 

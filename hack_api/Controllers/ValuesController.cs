@@ -8,6 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using hack_api.Model;
+using Microsoft.AspNetCore.Cors;
 
 namespace hack_api.Controllers
 {
@@ -15,9 +16,15 @@ namespace hack_api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        [HttpGet]
+        public string Get()
+        {
+            return "HELLO DIMA BL9T";
+        }
+
         // POST api/values
         [HttpPost]
-        public string Post([FromBody] GetJSON jSON)
+        public string Post([FromBody] DataMobailLevel jSON)
         {
             //Вынести на уровень выше
             const string nameCollection = "Note";
@@ -27,20 +34,19 @@ namespace hack_api.Controllers
             switch (jSON.func)
             {
                 case "ADD":
-                    Add(collection, jSON.GetParent()).GetAwaiter();
+                    Add(collection, jSON).GetAwaiter();
                     return "1";
                 case "ALL":
                     return GetNotes(collection).GetAwaiter().GetResult();
                 case "DEL":
-                    return Delete(collection,jSON.id).GetAwaiter().GetResult().ToJson();
+                    return Delete(collection,jSON.Id).GetAwaiter().GetResult().ToJson();
                 case "UPD":
                     return Update(collection, jSON).GetAwaiter().GetResult();
-
             }
             return "0";
         }
 
-        private static async Task Add(IMongoCollection<BsonDocument> collection, DataMobailLevel note)
+        private static async Task Add(IMongoCollection<BsonDocument> collection, GetJSON note)
         {
             await collection.InsertOneAsync(note.ToBsonDocument());
         }
@@ -57,7 +63,7 @@ namespace hack_api.Controllers
         }
         private static async Task<string> Update(IMongoCollection<BsonDocument> collection, GetJSON note )
         {
-            var result = await collection.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(note.id)),note.GetParent().ToBsonDocument());
+            var result = await collection.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(note.Id)),note.ToBsonDocument());
             return result.ToJson();
         }
     }
