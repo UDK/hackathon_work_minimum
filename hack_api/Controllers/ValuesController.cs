@@ -16,20 +16,47 @@ namespace hack_api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        [DisableCors]
         [HttpGet]
         public string Get()
         {
-            return "HELLO DIMA BL9T";
+            return "HELLO DIMA";
         }
-
+        [Route("data")]
         // POST api/values
         [HttpPost]
-        [EnableCors]
-        public string Post([FromBody] DataMobailLevel jSON)
+        public string PostData([FromBody] DataMobailLevel[] jSON)
         {
             //Вынести на уровень выше
             const string nameCollection = "Note";
+            MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
+            var database = client.GetDatabase("coordinateHackathon");
+            IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
+            //switch (jSON.func)
+            //{
+            //    case "ADD":
+            //        Add(collection, jSON).GetAwaiter();
+            //        return "1";
+            //    case "ALL":
+            //        return GetNotes(collection).GetAwaiter().GetResult();
+            //    case "DEL":
+            //        return Delete(collection,jSON.Id).GetAwaiter().GetResult().ToJson();
+            //    case "UPD":
+            //        return Update(collection, jSON).GetAwaiter().GetResult();
+            //}
+            foreach (DataMobailLevel jSONdata in jSON)
+            {
+                Add(collection, jSONdata).GetAwaiter();
+            }
+            return "0";
+        }
+
+
+        [HttpPost]
+        [Route("people")]
+        public string PostPeople([FromBody] People jSON)
+        {
+            //Вынести на уровень выше
+            const string nameCollection = "People";
             MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
             var database = client.GetDatabase("coordinateHackathon");
             IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
@@ -41,7 +68,7 @@ namespace hack_api.Controllers
                 case "ALL":
                     return GetNotes(collection).GetAwaiter().GetResult();
                 case "DEL":
-                    return Delete(collection,jSON.Id).GetAwaiter().GetResult().ToJson();
+                    return Delete(collection, jSON.Id).GetAwaiter().GetResult().ToJson();
                 case "UPD":
                     return Update(collection, jSON).GetAwaiter().GetResult();
             }

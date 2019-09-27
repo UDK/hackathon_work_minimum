@@ -8,6 +8,9 @@ namespace hack_api.Model
 {
     public class DataMobailLevel : GetJSON
     {
+
+        public int id { get; set; }
+
         public double X { get; set; }
 
         public double Y { get; set; }
