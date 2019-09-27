@@ -16,7 +16,7 @@ namespace hack_api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        [EnableCors]
+        [DisableCors]
         [HttpGet]
         public string Get()
         {
