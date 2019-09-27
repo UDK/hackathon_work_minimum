@@ -45,7 +45,7 @@ namespace hack_api.Controllers
             //}
             foreach (DataMobailLevel jSONdata in jSON)
             {
-                Add(collection, jSONdata);
+                Add(collection, jSONdata).GetAwaiter();
             }
             return "0";
         }
@@ -63,7 +63,7 @@ namespace hack_api.Controllers
             switch (jSON.func)
             {
                 case "ADD":
-                    Add(collection, jSON);
+                    Add(collection, jSON).GetAwaiter();
                     return "1";
                 case "ALL":
                     return GetNotes(collection).GetAwaiter().GetResult();
