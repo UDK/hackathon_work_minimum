@@ -51,6 +51,35 @@ namespace hack_api.Controllers
             return "1";
         }
 
+        [Route("test")]
+        [HttpGet]
+        public string GetTestWay()
+        {
+            Point pointStart = new Point(55.796134, 49.088999);
+            Point pointEnd = new Point(55.798455, 49.075159);
+            Point different = new Point((pointEnd.X - pointStart.X)/100, (pointEnd.Y - pointStart.Y)/100);
+            Point oneTh = new Point(0.0000232099999999, -0.00013840000000101852);
+            List<DataMobailLevel> dataMobailsTest = new List<DataMobailLevel>(100);
+            var pointXiteration = pointStart.X;
+            var pointYiteration = pointStart.Y;
+            Random rnd = new Random();
+            
+            for(int i = 0; i < 100; i++)
+            {
+                var levelRandom = rnd.Next(0, 12);
+                pointXiteration += oneTh.X;
+                pointYiteration += oneTh.Y;
+                DataMobailLevel testData = new DataMobailLevel();
+                testData.level = levelRandom;
+                testData.nameOperator = "Beeline";
+                testData.X = pointXiteration;
+                testData.Y = pointYiteration;
+                testData.valid = true;
+                dataMobailsTest.Add(testData);
+            }
+            return dataMobailsTest.ToJson();
+        }
+
         [HttpGet]
         [Route("const")]
         public string GetConst()
@@ -111,7 +140,7 @@ namespace hack_api.Controllers
         }
         private static async Task<string> GetNotes(IMongoCollection<BsonDocument> collection)
         {
-            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1}").ToListAsync();
+            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1,typeG:1}").ToListAsync();
             return Items.ToJson();
         }
         private static async Task<string> Delete(IMongoCollection<BsonDocument> collection, string idRemove)

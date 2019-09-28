@@ -19,8 +19,6 @@ namespace hack_api.Model
 
         public int level { get; set; }
 
-        public long time { get; set; }
-
         public bool valid { get; set; }
     }
 }
