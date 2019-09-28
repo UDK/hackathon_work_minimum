@@ -137,6 +137,10 @@ namespace hack_api.Controllers
                         goodPoint.Add(bsonValidTrue);
                     }
                 }
+                else
+                {
+                    goodPoint.Add(bsonValidTrue);
+                }
             }
             return goodPoint.ToJson();
             //return dd;
