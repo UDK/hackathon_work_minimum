@@ -136,6 +136,10 @@ namespace hack_api.Controllers
                     {
                         goodPoint.Add(bsonValidTrue);
                     }
+                    else
+                    {
+                        goodPoint.Add(bsonValidTrue.Set("level", -10));
+                    }
                 }
                 else
                 {
