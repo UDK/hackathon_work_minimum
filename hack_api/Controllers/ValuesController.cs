@@ -51,6 +51,12 @@ namespace hack_api.Controllers
             return "1";
         }
 
+        [HttpGet]
+        [Route("const")]
+        public string GetConst()
+        {
+            return new ConstAndroid().ToJson();
+        }
 
         [HttpGet]
         [Route("all")]
@@ -96,13 +102,16 @@ namespace hack_api.Controllers
             //return "1";
         }
 
-        private static void Add(IMongoCollection<BsonDocument> collection, GetJSON note)
+        private static void Add(IMongoCollection<BsonDocument> collection, DataMobailLevel note)
         {
-             collection.InsertOne(note.ToBsonDocument());
+            if (note.X != 0&&note.Y!=0)
+            {
+                collection.InsertOne(note.ToBsonDocument());
+            }
         }
         private static async Task<string> GetNotes(IMongoCollection<BsonDocument> collection)
         {
-            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1}").ToListAsync();
+            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1}").ToListAsync();
             return Items.ToJson();
         }
         private static async Task<string> Delete(IMongoCollection<BsonDocument> collection, string idRemove)
