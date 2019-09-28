@@ -45,7 +45,7 @@ namespace hack_api.Controllers
             //}
             foreach (DataMobailLevel jSONdata in jSON)
             {
-                Add(collection, jSONdata).GetAwaiter();
+                Add(collection, jSONdata);
             }
             return "0";
         }
@@ -63,7 +63,7 @@ namespace hack_api.Controllers
             switch (jSON.func)
             {
                 case "ADD":
-                    Add(collection, jSON).GetAwaiter();
+                    Add(collection, jSON);
                     return "1";
                 case "ALL":
                     return GetNotes(collection).GetAwaiter().GetResult();
@@ -75,9 +75,9 @@ namespace hack_api.Controllers
             return "0";
         }
 
-        private static async Task Add(IMongoCollection<BsonDocument> collection, GetJSON note)
+        private static void Add(IMongoCollection<BsonDocument> collection, GetJSON note)
         {
-             await collection.InsertOneAsync(note.ToBsonDocument());
+             collection.InsertOne(note.ToBsonDocument());
         }
         private static async Task<string> GetNotes(IMongoCollection<BsonDocument> collection)
         {
