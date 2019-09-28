@@ -202,7 +202,7 @@ namespace hack_api.Controllers
                     break;
                 }
             }
-            if (dOld < 0.003)
+            if (dOld < 0.03)
             {
                 return true;
             }
