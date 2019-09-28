@@ -116,9 +116,9 @@ namespace hack_api.Controllers
                 {
                     continue;
                 }
-                else if (bsonValidTrue.GetValue("valid").AsBoolean == true && bsonValidTrue.GetValue("X").AsDouble != 0)
+                if (bsonValidTrue.GetValue("valid").AsBoolean == true && bsonValidTrue.GetValue("X").AsDouble != 0)
                 {
-                    bsonElementsValid.Add(new Point(bsonValidTrue.GetValue("X").AsDouble, bsonValidTrue.GetValue("Y").AsDouble));
+                   bsonElementsValid.Add(new Point(bsonValidTrue.GetValue("X").AsDouble, bsonValidTrue.GetValue("Y").AsDouble));
                 }
             }
             MathIn checkPoints = new MathIn(bsonElementsValid);
@@ -197,13 +197,11 @@ namespace hack_api.Controllers
                 {
                     dOld = d;
                 }
-                if(pointCompare.X == 55.799164 && d < 0.8)
-                {
-                    break;
-                }
             }
+            if (dOld <0.0003)
+            {
                 return true;
-            
+            }
             return false;
         }
     }
