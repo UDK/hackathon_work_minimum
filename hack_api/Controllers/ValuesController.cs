@@ -191,7 +191,7 @@ namespace hack_api.Controllers
                 double B = x1 - x2;
                 double C = x1 * (y1 - y2) + y1 * (x2 - x1);
                 double d = Math.Abs(A * pointCompare.X + B * pointCompare.Y + C) / Math.Sqrt(Math.Pow(A, 2) + Math.Pow(B, 2));
-                if(d<100)
+                if(d<0.3)
                 {
                     return true;
                 }
