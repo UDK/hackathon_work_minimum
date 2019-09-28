@@ -108,27 +108,39 @@ namespace hack_api.Controllers
             //    case "UPD":
             //        return Update(collection, jSON).GetAwaiter().GetResult();
             //}
-            var dd = GetNotes(collection).GetAwaiter().GetResult();
-
-            return dd;
-            //List<Point> bsonElementsValid = new List<Point>(bsonElements.Count / 4);
-            //foreach (BsonDocument bsonValidTrue in bsonElements)
-            //{
-            //    if (bsonValidTrue.GetValue("valid").AsBoolean == true && bsonValidTrue.GetValue("X").AsDouble != 0)
-            //    {
-            //        bsonElementsValid.Add(new Point(bsonValidTrue.GetValue("X").AsDouble, bsonValidTrue.GetValue("Y").AsDouble));
-            //    }
-            //}
-            //MathIn checkPoints = new MathIn(bsonElementsValid);
-            //foreach (BsonDocument bsonValidTrue in bsonElements)
-            //{
-            //    if (bsonValidTrue.GetValue("valid").AsBoolean == true && bsonValidTrue.GetValue("X").AsDouble != 0)
-            //    {
-            //        bsonElementsValid.Add(new Point(bsonValidTrue.GetValue("X").AsDouble, bsonValidTrue.GetValue("Y").AsDouble));
-            //    }
-            //}
-            //checkPoints.pointInLine();
-            //return "1";
+            var bsonElements = GetNotes(collection).GetAwaiter().GetResult();
+            List<Point> bsonElementsValid = new List<Point>(bsonElements.Count / 4);
+            foreach (BsonDocument bsonValidTrue in bsonElements)
+            {
+                if (!bsonValidTrue.TryGetValue("valid", out var plug))
+                {
+                    continue;
+                }
+                else if (bsonValidTrue.GetValue("valid").AsBoolean == true && bsonValidTrue.GetValue("X").AsDouble != 0)
+                {
+                    bsonElementsValid.Add(new Point(bsonValidTrue.GetValue("X").AsDouble, bsonValidTrue.GetValue("Y").AsDouble));
+                }
+            }
+            MathIn checkPoints = new MathIn(bsonElementsValid);
+            List<BsonDocument> goodPoint = new List<BsonDocument>();
+            foreach (BsonDocument bsonValidTrue in bsonElements)
+            {
+                if (!bsonValidTrue.TryGetValue("valid", out var plug))
+                {
+                    continue;
+                }
+                else if (bsonValidTrue.GetValue("valid").AsBoolean == false)
+                {
+                    Point pointCheck = new Point(bsonValidTrue.GetValue("X").AsDouble, bsonValidTrue.GetValue("Y").AsDouble);
+                    if (checkPoints.pointInLine(pointCheck))
+                    {
+                        goodPoint.Add(bsonValidTrue);
+                    }
+                }
+            }
+            return goodPoint.ToJson();
+            //return dd;
+            
         }
 
         private static void Add(IMongoCollection<BsonDocument> collection, DataMobailLevel note)
@@ -138,10 +150,10 @@ namespace hack_api.Controllers
                 collection.InsertOne(note.ToBsonDocument());
             }
         }
-        private static async Task<string> GetNotes(IMongoCollection<BsonDocument> collection)
+        private static async Task<List<BsonDocument>> GetNotes(IMongoCollection<BsonDocument> collection)
         {
-            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1,typeG:1}").ToListAsync();
-            return Items.ToJson();
+            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1,typeG:1,valid:1}").ToListAsync();
+            return Items;
         }
         private static async Task<string> Delete(IMongoCollection<BsonDocument> collection, string idRemove)
         {
@@ -179,6 +191,10 @@ namespace hack_api.Controllers
                 double B = x1 - x2;
                 double C = x1 * (y1 - y2) + y1 * (x2 - x1);
                 double d = Math.Abs(A * pointCompare.X + B * pointCompare.Y + C) / Math.Sqrt(Math.Pow(A, 2) + Math.Pow(B, 2));
+                if(d>-100)
+                {
+                    return true;
+                }
             }
             return false;
         }
