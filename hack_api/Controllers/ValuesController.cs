@@ -48,7 +48,7 @@ namespace hack_api.Controllers
             {
                 Add(collection, jSONdata);
             }
-            return "0";
+            return "1";
         }
 
 
