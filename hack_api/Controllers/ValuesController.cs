@@ -179,7 +179,9 @@ namespace hack_api.Controllers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool pointInLine(Point pointCompare)
         {
-            for(int twoPoint = 0; twoPoint<points.Count-1; twoPoint++)
+            double d = 0;
+            double dOld = 9999999;
+            for (int twoPoint = 0; twoPoint<points.Count-1; twoPoint++)
             {
                 double x1 = points[twoPoint].X;
                 double x2 = points[twoPoint+1].X;
@@ -190,11 +192,19 @@ namespace hack_api.Controllers
                 double A = y2 - y1;
                 double B = x1 - x2;
                 double C = x1 * (y1 - y2) + y1 * (x2 - x1);
-                double d = Math.Abs(A * pointCompare.X + B * pointCompare.Y + C) / Math.Sqrt(Math.Pow(A, 2) + Math.Pow(B, 2));
-                if(d<0.3)
+                d = Math.Abs(A * pointCompare.X + B * pointCompare.Y + C) / Math.Sqrt(Math.Pow(A, 2) + Math.Pow(B, 2));
+                if (d<dOld)
                 {
-                    return true;
+                    dOld = d;
                 }
+                if(pointCompare.X == 55.799164 && d < 0.8)
+                {
+                    break;
+                }
+            }
+            if (dOld < 0.0003)
+            {
+                return true;
             }
             return false;
         }
