@@ -22,6 +22,33 @@ namespace hack_api.Controllers
         {
             return "HELLO DIMA";
         }
+        public struct RoadFromTo
+        {
+            public string nameFrom;
+            public string nameTo;
+        }
+
+        [HttpPost]
+        [Route("roadLine")]
+        public string RoadLine([FromBody]RoadFromTo roadFromTo)
+        {
+            const string nameCollection = "roadLine";
+            MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
+            var database = client.GetDatabase("coordinateHackathon");
+            IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
+            List<BsonDocument> bsonElements = GetNotes(collection).GetAwaiter().GetResult();
+            List<BsonDocument> elementsOnRoad = new List<BsonDocument>();
+            foreach (BsonDocument elementsPoint in bsonElements)
+            {
+                if(elementsPoint.GetValue("name").AsString == roadFromTo.nameFrom || elementsPoint.GetValue("name").AsString == roadFromTo.nameTo)
+                {
+                    elementsOnRoad.Add(elementsPoint);
+                }
+            }
+            return elementsOnRoad.ToJson();
+        }
+
+
         [Route("data")]
         // POST api/values
         [HttpPost]
@@ -147,7 +174,6 @@ namespace hack_api.Controllers
                 }
             }
             return goodPoint.ToJson();
-            //return dd;
             
         }
 
@@ -160,7 +186,7 @@ namespace hack_api.Controllers
         }
         private static async Task<List<BsonDocument>> GetNotes(IMongoCollection<BsonDocument> collection)
         {
-            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1,typeG:1,valid:1}").ToListAsync();
+            var Items = await collection.Find(new BsonDocument()).Project("{_id:0,X:1,Y:1,level:1,nameOperator:1,typeG:1,valid:1,name:1}").ToListAsync();
             return Items;
         }
         private static async Task<string> Delete(IMongoCollection<BsonDocument> collection, string idRemove)
