@@ -22,17 +22,12 @@ namespace hack_api.Controllers
         {
             return "HELLO DIMA";
         }
-        public struct RoadFromTo
-        {
-            public string nameFrom;
-            public string nameTo;
-        }
 
         [HttpPost]
         [Route("roadLine")]
         public string RoadLine([FromBody]RoadFromTo roadFromTo)
         {
-            const string nameCollection = "roadLine";
+            const string nameCollection = "Note";
             MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
             var database = client.GetDatabase("coordinateHackathon");
             IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
@@ -40,6 +35,10 @@ namespace hack_api.Controllers
             List<BsonDocument> elementsOnRoad = new List<BsonDocument>();
             foreach (BsonDocument elementsPoint in bsonElements)
             {
+                if (!elementsPoint.TryGetValue("name", out var plug))
+                {
+                    continue;
+                }
                 if(elementsPoint.GetValue("name").AsString == roadFromTo.nameFrom || elementsPoint.GetValue("name").AsString == roadFromTo.nameTo)
                 {
                     elementsOnRoad.Add(elementsPoint);
@@ -54,23 +53,10 @@ namespace hack_api.Controllers
         [HttpPost]
         public string PostData([FromBody] DataMobailLevel[] jSON)
         {
-            //Вынести на уровень выше
             const string nameCollection = "Note";
             MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
             var database = client.GetDatabase("coordinateHackathon");
             IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
-            //switch (jSON.func)
-            //{
-            //    case "ADD":
-            //        Add(collection, jSON).GetAwaiter();
-            //        return "1";
-            //    case "ALL":
-            //        return GetNotes(collection).GetAwaiter().GetResult();
-            //    case "DEL":
-            //        return Delete(collection,jSON.Id).GetAwaiter().GetResult().ToJson();
-            //    case "UPD":
-            //        return Update(collection, jSON).GetAwaiter().GetResult();
-            //}
             foreach (DataMobailLevel jSONdata in jSON)
             {
                 Add(collection, jSONdata);
@@ -123,18 +109,6 @@ namespace hack_api.Controllers
             MongoClient client = new MongoClient("mongodb+srv://public:12345qwert@hackathon-giyck.mongodb.net/test?retryWrites=true&w=majority");
             var database = client.GetDatabase("coordinateHackathon");
             IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(nameCollection);
-            //switch (jSON.func)
-            //{
-            //    case "ADD":
-            //        Add(collection, jSON);
-            //        return "1";
-            //    case "ALL":
-            //        return GetNotes(collection).GetAwaiter().GetResult();
-            //    case "DEL":
-            //        return Delete(collection, jSON.Id).GetAwaiter().GetResult().ToJson();
-            //    case "UPD":
-            //        return Update(collection, jSON).GetAwaiter().GetResult();
-            //}
             var bsonElements = GetNotes(collection).GetAwaiter().GetResult();
             List<Point> bsonElementsValid = new List<Point>(bsonElements.Count / 4);
             foreach (BsonDocument bsonValidTrue in bsonElements)
@@ -249,5 +223,11 @@ namespace hack_api.Controllers
         }
         public double X;
         public double Y;
+    }
+
+    public struct RoadFromTo
+    {
+        public string nameFrom;
+        public string nameTo;
     }
 }
